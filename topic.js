@@ -1,43 +1,38 @@
-const firebaseConfig = {
-  // ВСТАВЬ СЮДА СВОЙ КОНФИГ FIREBASE
-  apiKey: "",
-  authDomain: "",
-  projectId: "",
-  storageBucket: "",
-  messagingSenderId: "",
-  appId: ""
-};
-
-const fb = { app: null, db: null, ready: false };
-
-try {
-  if (!firebase.apps.length) {
-    firebase.initializeApp(firebaseConfig);
-  }
-  fb.app = firebase.app();
-  fb.db = firebase.firestore();
-  fb.ready = true;
-} catch (e) {
-  fb.ready = false;
-}
-
 let topicId = null;
 let topicData = null;
 
-function escapeHtml(str) {
-  return String(str)
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#39;");
+function setStat(id, value) {
+  const el = document.getElementById(id);
+  if (el) el.textContent = value;
 }
 
-function formatDate(ts) {
-  if (!ts) return "";
-  const d = ts.toDate ? ts.toDate() : new Date(ts);
-  return d.toLocaleDateString("ru-RU") + " " +
-    d.toLocaleTimeString("ru-RU", { hour: "2-digit", minute: "2-digit" });
+function showError(message) {
+  document.getElementById("topic-container").innerHTML =
+    '<div class="error-box">' + escapeHtml(message) + "</div>" +
+    '<a class="btn btn-secondary" href="index.html">' + escapeHtml(t("back.topics")) + "</a>";
+}
+
+async function loadTopic() {
+  if (!fb.ready) {
+    showError(t("err.fbsetup"));
+    return;
+  }
+  if (!topicId) {
+    showError(t("topic.noId"));
+    return;
+  }
+  try {
+    const doc = await fb.db.collection("topics").doc(topicId).get();
+    if (!doc.exists) {
+      showError(t("topic.deleted"));
+      return;
+    }
+    topicData = Object.assign({ id: doc.id }, doc.data());
+    renderTopic();
+    subscribeToAnswers();
+  } catch (e) {
+    showError(t("topic.errload") + e.message);
+  }
 }
 
 function getTopicIdFromUrl() {
@@ -45,37 +40,8 @@ function getTopicIdFromUrl() {
   return params.get("id");
 }
 
-function showError(message) {
-  document.getElementById("topic-container").innerHTML =
-    '<div class="error-box">' + escapeHtml(message) + "</div>" +
-    '<a class="btn btn-secondary" href="index.html">Ко всем темам</a>';
-}
-
-async function loadTopic() {
-  if (!fb.ready) {
-    showError("Firebase не настроен. Вставьте конфиг в начало файла topic.js.");
-    return;
-  }
-  if (!topicId) {
-    showError("Тема не найдена: в адресе отсутствует параметр id.");
-    return;
-  }
-  try {
-    const doc = await fb.db.collection("topics").doc(topicId).get();
-    if (!doc.exists) {
-      showError("Такой темы не существует или она была удалена.");
-      return;
-    }
-    topicData = Object.assign({ id: doc.id }, doc.data());
-    renderTopic();
-    subscribeToAnswers();
-  } catch (e) {
-    showError("Ошибка загрузки темы: " + e.message);
-  }
-}
-
 function renderTopic() {
-  document.title = topicData.title + " — ЗнаниеОбмен";
+  document.title = topicData.title + " — " + t("app.name");
   document.getElementById("topic-title").textContent = topicData.title;
   document.getElementById("topic-author").textContent = topicData.author;
   document.getElementById("topic-date").textContent = formatDate(topicData.createdAt);
@@ -100,18 +66,21 @@ function subscribeToAnswers() {
       renderAnswers(answers);
     }, (e) => {
       document.getElementById("answers-list").innerHTML =
-        '<div class="error-box">Ошибка загрузки ответов: ' + escapeHtml(e.message) + "</div>";
+        '<div class="error-box">' + escapeHtml(t("answers.errload") + e.message) + "</div>";
     });
 }
 
 function renderAnswers(answers) {
   const listEl = document.getElementById("answers-list");
-  document.getElementById("answers-count").textContent = answers.length;
-  document.getElementById("answers-count-header").textContent = answers.length;
-  document.getElementById("solved-status").textContent = topicData.bestAnswerId ? "Да" : "Нет";
+  setStat("answers-count", answers.length);
+  setStat("side-answers-count", answers.length);
+  setStat("answers-count-header", answers.length);
+  const solvedText = topicData.bestAnswerId ? t("yes") : t("no");
+  setStat("solved-status", solvedText);
+  setStat("side-solved-status", solvedText);
 
   if (!answers.length) {
-    listEl.innerHTML = '<div class="empty-state">Ответов пока нет. Будьте первым — помогите автору темы.</div>';
+    listEl.innerHTML = '<div class="empty-state">' + escapeHtml(t("answers.empty")) + "</div>";
     return;
   }
 
@@ -119,13 +88,13 @@ function renderAnswers(answers) {
 
   listEl.innerHTML = answers.map((a) => {
     const isBest = a.id === bestId;
-    const bestBadge = isBest ? '<span class="badge-best">Лучший ответ</span>' : "";
+    const bestBadge = isBest ? '<span class="badge-best">' + escapeHtml(t("card.best")) + "</span>" : "";
     const actionBtn = isBest
-      ? '<button class="btn btn-small btn-secondary" data-unmark="' + a.id + '">Снять отметку</button>'
-      : '<button class="btn btn-small" data-mark="' + a.id + '">Лучший ответ</button>';
+      ? '<button class="btn btn-small btn-secondary" data-unmark="' + a.id + '">' + escapeHtml(t("answer.unmark")) + "</button>"
+      : '<button class="btn btn-small" data-mark="' + a.id + '">' + escapeHtml(t("answer.mark")) + "</button>";
     return (
       '<article class="answer' + (isBest ? " is-best" : "") + '" id="answer-' + a.id + '">' +
-      '<div class="answer-meta">Ответил: ' + escapeHtml(a.author) + " · " + formatDate(a.createdAt) + bestBadge + "</div>" +
+      '<div class="answer-meta">' + escapeHtml(t("answer.by")) + " " + escapeHtml(a.author) + " · " + formatDate(a.createdAt) + bestBadge + "</div>" +
       '<div class="answer-text">' + escapeHtml(a.text) + "</div>" +
       '<div class="answer-actions">' + actionBtn + "</div>" +
       "</article>"
@@ -141,10 +110,10 @@ function renderAnswers(answers) {
 }
 
 async function markBest(answerId) {
-  const name = prompt("Для отметки лучшего ответа введите имя автора темы:");
+  const name = prompt(t("mark.prompt"));
   if (name === null) return;
   if (name.trim().toLowerCase() !== String(topicData.author).trim().toLowerCase()) {
-    alert("Отметить лучший ответ может только автор темы.");
+    alert(t("mark.errauthor"));
     return;
   }
   try {
@@ -152,15 +121,15 @@ async function markBest(answerId) {
     topicData.bestAnswerId = answerId;
     reloadAnswersOnce();
   } catch (e) {
-    alert("Не удалось отметить ответ: " + e.message);
+    alert(t("mark.errsave") + e.message);
   }
 }
 
 async function unmarkBest(answerId) {
-  const name = prompt("Для снятия отметки введите имя автора темы:");
+  const name = prompt(t("unmark.prompt"));
   if (name === null) return;
   if (name.trim().toLowerCase() !== String(topicData.author).trim().toLowerCase()) {
-    alert("Снять отметку может только автор темы.");
+    alert(t("unmark.errauthor"));
     return;
   }
   try {
@@ -168,7 +137,7 @@ async function unmarkBest(answerId) {
     topicData.bestAnswerId = null;
     reloadAnswersOnce();
   } catch (e) {
-    alert("Не удалось снять отметку: " + e.message);
+    alert(t("unmark.errsave") + e.message);
   }
 }
 
@@ -192,12 +161,12 @@ async function submitAnswer(event) {
   errorEl.textContent = "";
 
   if (!text || !author) {
-    errorEl.textContent = "Заполните текст ответа и ваше имя.";
+    errorEl.textContent = t("reply.errfill");
     errorEl.style.display = "block";
     return;
   }
   if (!fb.ready || !topicData) {
-    errorEl.textContent = "Firebase не настроен — отправка невозможна.";
+    errorEl.textContent = t("reply.errnofb");
     errorEl.style.display = "block";
     return;
   }
@@ -217,7 +186,7 @@ async function submitAnswer(event) {
     });
     document.getElementById("answerForm").reset();
   } catch (e) {
-    errorEl.textContent = "Ошибка сохранения ответа: " + e.message;
+    errorEl.textContent = t("reply.errsave") + e.message;
     errorEl.style.display = "block";
   } finally {
     submitBtn.disabled = false;
@@ -227,5 +196,13 @@ async function submitAnswer(event) {
 document.addEventListener("DOMContentLoaded", () => {
   topicId = getTopicIdFromUrl();
   document.getElementById("answerForm").addEventListener("submit", submitAnswer);
+
+  document.addEventListener("kf:refresh", () => {
+    if (topicData) {
+      renderTopic();
+      reloadAnswersOnce();
+    }
+  });
+
   loadTopic();
 });
