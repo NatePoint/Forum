@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ЗнаниеОбмен — форум вопросов и ответов</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="layout">
+
+    <aside class="sidebar-left">
+      <div class="logo">
+        ЗнаниеОбмен
+        <span>Форум обмена знаниями</span>
+      </div>
+      <ul class="nav">
+        <li><a href="index.html" data-view="topics" class="active">Все темы</a></li>
+        <li><a href="#" id="btn-open-create-menu">Создать тему</a></li>
+        <li><a href="#" data-view="rules">Правила</a></li>
+      </ul>
+    </aside>
+
+    <main class="content">
+      <section id="view-topics">
+        <div class="page-header">
+          <h1>Все темы</h1>
+          <button class="btn" id="btn-open-create">Создать тему</button>
+        </div>
+        <div id="topic-list">
+          <div class="loading">Загрузка тем...</div>
+        </div>
+        <nav class="pagination" id="pagination"></nav>
+      </section>
+
+      <section id="view-rules" style="display:none">
+        <div class="page-header">
+          <h1>Правила форума</h1>
+        </div>
+        <ul class="rules-list">
+          <li><span class="rule-num">1.</span><span>Задавайте один конкретный вопрос в одной теме. Так проще найти ответ в будущем.</span></li>
+          <li><span class="rule-num">2.</span><span>Отвечайте по существу. Ответ должен решать проблему, а не спорить с автором.</span></li>
+          <li><span class="rule-num">3.</span><span>Автор темы обязан отметить лучший ответ кнопкой под подходящим ответом.</span></li>
+          <li><span class="rule-num">4.</span><span>На форуме нет лайков и рейтингов. Порядок тем — только по дате создания.</span></li>
+          <li><span class="rule-num">5.</span><span>Уважайте других участников. Оскорбления и спам удаляются без предупреждения.</span></li>
+        </ul>
+      </section>
+    </main>
+
+    <aside class="sidebar-right">
+      <div class="info-block">
+        <h3>Статистика</h3>
+        <div class="stat-row"><span>Тем:</span><strong id="stat-topics">0</strong></div>
+        <div class="stat-row"><span>Ответов:</span><strong id="stat-answers">0</strong></div>
+        <div class="stat-row"><span>Решённых:</span><strong id="stat-solved">0</strong></div>
+        <div class="stat-row"><span>Авторов:</span><strong id="stat-authors">0</strong></div>
+      </div>
+      <div class="info-block">
+        <h3>Популярные теги</h3>
+        <div class="tag-list" id="popular-tags">
+          <span class="topic-meta">Тегов пока нет</span>
+        </div>
+      </div>
+      <div class="info-block">
+        <h3>О форуме</h3>
+        <p style="font-size:14px">ЗнаниеОбмен — это анти-reddit. Здесь нет голосов и кармы. Ценен только один ответ — тот, который автор темы признал лучшим. Все данные общие и видны каждому.</p>
+      </div>
+    </aside>
+
+  </div>
+
+  <div class="modal-overlay" id="create-modal">
+    <div class="modal">
+      <h2>Новая тема</h2>
+      <form id="createForm">
+        <div class="form-row">
+          <label for="field-title">Заголовок</label>
+          <input type="text" id="field-title" maxlength="120" placeholder="Как бесплатно хранить JSON-файлы больше 5 МБ?">
+        </div>
+        <div class="form-row">
+          <label for="field-text">Текст вопроса</label>
+          <textarea id="field-text" rows="6" placeholder="Опишите проблему подробно: что пробовали, что получилось, что нет."></textarea>
+        </div>
+        <div class="form-row">
+          <label for="field-author">Ваше имя</label>
+          <input type="text" id="field-author" maxlength="40" placeholder="Имя или ник">
+        </div>
+        <div class="form-row">
+          <label for="field-tags">Теги (через запятую, до 5)</label>
+          <input type="text" id="field-tags" placeholder="firebase, хранилище, json">
+        </div>
+        <div class="error-box" id="create-error" style="display:none"></div>
+        <div class="modal-actions">
+          <button type="button" class="btn btn-secondary" id="btn-close-modal">Отмена</button>
+          <button type="submit" class="btn" id="btn-submit-topic">Опубликовать</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore-compat.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
