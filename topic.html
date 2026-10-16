@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Тема — ЗнаниеОбмен</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="layout">
+
+    <aside class="sidebar-left">
+      <div class="logo">
+        ЗнаниеОбмен
+        <span>Форум обмена знаниями</span>
+      </div>
+      <ul class="nav">
+        <li><a href="index.html">Все темы</a></li>
+        <li><a href="index.html#create">Создать тему</a></li>
+        <li><a href="index.html#rules">Правила</a></li>
+      </ul>
+    </aside>
+
+    <main class="content">
+      <div id="topic-container">
+        <div class="breadcrumbs"><a href="index.html">Все темы</a> · Страница темы</div>
+
+        <section class="topic-full">
+          <h1 id="topic-title">Загрузка...</h1>
+          <div class="topic-meta">
+            Автор: <strong id="topic-author"></strong> · <span id="topic-date"></span>
+          </div>
+          <div class="tag-list" id="topic-tags" style="margin-bottom:16px"></div>
+          <div class="topic-body" id="topic-text"></div>
+        </section>
+
+        <h2 class="answers-title">Ответы (<span id="answers-count-header">0</span>)</h2>
+        <div id="answers-list">
+          <div class="loading">Загрузка ответов...</div>
+        </div>
+
+        <section class="reply-form">
+          <h3>Добавить ответ</h3>
+          <form id="answerForm">
+            <div class="form-row">
+              <label for="field-answer-author">Ваше имя</label>
+              <input type="text" id="field-answer-author" maxlength="40" placeholder="Имя или ник">
+            </div>
+            <div class="form-row">
+              <label for="field-answer-text">Текст ответа</label>
+              <textarea id="field-answer-text" rows="5" placeholder="Ответьте по существу: решите проблему автора, а не спорьте с ним."></textarea>
+            </div>
+            <div class="error-box" id="answer-error" style="display:none"></div>
+            <button type="submit" class="btn" id="btn-submit-answer">Отправить ответ</button>
+          </form>
+        </section>
+      </div>
+    </main>
+
+    <aside class="sidebar-right">
+      <div class="info-block">
+        <h3>Статистика темы</h3>
+        <div class="stat-row"><span>Ответов:</span><strong id="answers-count">0</strong></div>
+        <div class="stat-row"><span>Решение найдено:</span><strong id="solved-status">Нет</strong></div>
+      </div>
+      <div class="info-block">
+        <h3>Как это работает</h3>
+        <p style="font-size:14px">Здесь нет голосования. Когда автор темы получит подходящий ответ, он нажмёт кнопку «Лучший ответ» под ним — и тема будет считаться решённой.</p>
+      </div>
+      <div class="info-block">
+        <h3>О форуме</h3>
+        <p style="font-size:14px">ЗнаниеОбмен — анти-reddit: только вопросы, ответы и одно признание автора. Все данные общие для всех посетителей.</p>
+      </div>
+    </aside>
+
+  </div>
+
+  <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore-compat.js"></script>
+  <script src="topic.js"></script>
+</body>
+</html>
