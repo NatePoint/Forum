@@ -1,132 +1,70 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ЗнаниеОбмен — форум вопросов и ответов</title>
-  <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Focus Trap — новый проект</title>
+<link rel="stylesheet" href="style.css">
 </head>
-<body data-page="index">
-  <div class="layout">
+<body>
 
-    <aside class="sidebar-left">
-      <div class="sidebar-head">
-        <div class="logo">
-          <span data-i18n="app.name">ЗнаниеОбмен</span>
-          <span data-i18n="app.tagline">Форум обмена знаниями</span>
-        </div>
-        <button type="button" class="collapse-btn" id="btn-collapse" aria-expanded="true">&laquo;</button>
-      </div>
-      <ul class="nav">
-        <li><a href="#topics" data-view="topics" class="active"><span class="nav-icon">T</span><span data-i18n="nav.topics">Все темы</span></a></li>
-        <li><a href="#create" id="btn-open-create-menu"><span class="nav-icon">+</span><span data-i18n="nav.create">Создать тему</span></a></li>
-        <li><a href="#rules" data-view="rules"><span class="nav-icon">R</span><span data-i18n="nav.rules">Правила</span></a></li>
-        <li><a href="#settings" data-view="settings"><span class="nav-icon">S</span><span data-i18n="nav.settings">Настройки</span></a></li>
-      </ul>
-      <div class="side-stats">
-        <h3 data-i18n="sidebar.stats.title">Статистика</h3>
-        <div class="stat-row"><span data-i18n="sidebar.stats.topics">Всего тем:</span><strong id="side-stat-topics">0</strong></div>
-        <div class="stat-row"><span data-i18n="sidebar.stats.answers">Всего ответов:</span><strong id="side-stat-answers">0</strong></div>
-        <div class="stat-row"><span data-i18n="sidebar.stats.solved">Решённых:</span><strong id="side-stat-solved">0</strong></div>
-        <div class="stat-row"><span data-i18n="sidebar.stats.authors">Авторов:</span><strong id="side-stat-authors">0</strong></div>
-      </div>
-      <nav class="nav-rail">
-        <a href="#topics" data-view="topics" class="active" title="Topics">T</a>
-        <a href="#create" data-action="create" title="Create">+</a>
-        <a href="#rules" data-view="rules" title="Rules">R</a>
-        <a href="#settings" data-view="settings" title="Settings">S</a>
-      </nav>
-    </aside>
-
-    <main class="content">
-      <section id="view-topics">
-        <div class="page-header">
-          <h1 data-i18n="index.h1">Все темы</h1>
-          <button class="btn" id="btn-open-create" data-i18n="index.btn.create">Создать тему</button>
-        </div>
-        <div id="topic-list">
-          <div class="loading" data-i18n="index.loading">Загрузка тем...</div>
-        </div>
-        <nav class="pagination" id="pagination"></nav>
-      </section>
-
-      <section id="view-rules" style="display:none">
-        <div class="page-header">
-          <h1 data-i18n="rules.h1">Правила форума</h1>
-        </div>
-        <p class="page-subtitle" data-i18n="rules.subtitle">Коротко: спрашивайте конкретно, отвечайте по делу, признавайте лучший ответ.</p>
-        <ul class="rules-list" id="rules-list"></ul>
-      </section>
-
-      <section id="view-settings" style="display:none">
-        <div class="page-header">
-          <h1 data-i18n="settings.h1">Настройки</h1>
-        </div>
-        <div class="setting-group">
-          <h3 data-i18n="settings.theme.label">Тема оформления</h3>
-          <div class="setting-options" id="theme-buttons"></div>
-        </div>
-        <div class="setting-group">
-          <h3 data-i18n="settings.lang.label">Язык интерфейса</h3>
-          <div class="setting-options" id="lang-buttons"></div>
-        </div>
-      </section>
-    </main>
-
-    <aside class="sidebar-right">
-      <div class="info-block">
-        <h3 data-i18n="sidebar.stats.title">Статистика</h3>
-        <div class="stat-row"><span data-i18n="sidebar.stats.topics">Всего тем:</span><strong id="stat-topics">0</strong></div>
-        <div class="stat-row"><span data-i18n="sidebar.stats.answers">Всего ответов:</span><strong id="stat-answers">0</strong></div>
-        <div class="stat-row"><span data-i18n="sidebar.stats.solved">Решённых:</span><strong id="stat-solved">0</strong></div>
-        <div class="stat-row"><span data-i18n="sidebar.stats.authors">Авторов:</span><strong id="stat-authors">0</strong></div>
-      </div>
-      <div class="info-block">
-        <h3 data-i18n="sidebar.tags.title">Популярные теги</h3>
-        <div class="tag-list" id="popular-tags">
-          <span class="topic-meta" data-i18n="sidebar.tags.empty">Тегов пока нет</span>
-        </div>
-      </div>
-      <div class="info-block">
-        <h3 data-i18n="sidebar.about.title">О форуме</h3>
-        <p data-i18n="sidebar.about.text">ЗнаниеОбмен — анти-reddit. Здесь нет голосов и кармы. Ценен только один ответ — тот, который автор темы признал лучшим. Все данные общие и видны каждому.</p>
-      </div>
-    </aside>
-
+<header class="site-header">
+  <div class="header-inner">
+    <a href="#" class="logo">
+      <span class="logo-mark">FT</span>
+      <span class="logo-text">Focus Trap</span>
+    </a>
+    <nav class="main-nav">
+      <a href="#about" class="nav-link active">Главная</a>
+      <a href="#features" class="nav-link">Возможности</a>
+      <a href="#contact" class="nav-link">Контакты</a>
+    </nav>
+    <button type="button" class="burger" id="burger" aria-label="Открыть меню" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
   </div>
+  <nav class="mobile-nav" id="mobileNav">
+    <a href="#about" class="nav-link">Главная</a>
+    <a href="#features" class="nav-link">Возможности</a>
+    <a href="#contact" class="nav-link">Контакты</a>
+  </nav>
+</header>
 
-  <div class="modal-overlay" id="create-modal">
-    <div class="modal">
-      <h2 data-i18n="modal.new">Новая тема</h2>
-      <form id="createForm">
-        <div class="form-row">
-          <label for="field-title" data-i18n="modal.title">Заголовок</label>
-          <input type="text" id="field-title" maxlength="120" data-i18n-ph="modal.ph.title" placeholder="Как бесплатно хранить JSON-файлы больше 5 МБ?">
-        </div>
-        <div class="form-row">
-          <label for="field-text" data-i18n="modal.text">Текст вопроса</label>
-          <textarea id="field-text" rows="6" data-i18n-ph="modal.ph.text" placeholder="Опишите проблему подробно: что пробовали, что получилось, что нет."></textarea>
-        </div>
-        <div class="form-row">
-          <label for="field-author" data-i18n="modal.author">Ваше имя</label>
-          <input type="text" id="field-author" maxlength="40" data-i18n-ph="modal.ph.author" placeholder="Имя или ник">
-        </div>
-        <div class="form-row">
-          <label for="field-tags" data-i18n="modal.tags">Теги (через запятую, до 5)</label>
-          <input type="text" id="field-tags" data-i18n-ph="modal.ph.tags" placeholder="firebase, хранилище, json">
-        </div>
-        <div class="error-box" id="create-error" style="display:none"></div>
-        <div class="modal-actions">
-          <button type="button" class="btn btn-secondary" id="btn-close-modal" data-i18n="modal.cancel">Отмена</button>
-          <button type="submit" class="btn" id="btn-submit-topic" data-i18n="modal.submit">Опубликовать</button>
-        </div>
-      </form>
-    </div>
-  </div>
+<main>
+  <section class="hero" id="about">
+    <h1>Focus Trap</h1>
+    <p class="hero-sub">Стартовая страница нового проекта. Шапка готова, дальше — больше.</p>
+    <a href="#features" class="btn-primary">Смотреть разделы</a>
+  </section>
 
-  <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore-compat.js"></script>
-  <script src="ui.js"></script>
-  <script src="app.js"></script>
+  <section class="placeholder" id="features">
+    <h2>Разделы появятся позже</h2>
+    <p>Это заглушка под будущий контент проекта.</p>
+  </section>
+</main>
+
+<footer class="site-footer" id="contact">
+  <p>Focus Trap, 2026</p>
+</footer>
+
+<script>
+const burger = document.getElementById('burger');
+const mobileNav = document.getElementById('mobileNav');
+
+burger.addEventListener('click', () => {
+  const isOpen = mobileNav.classList.toggle('open');
+  burger.classList.toggle('open', isOpen);
+  burger.setAttribute('aria-expanded', String(isOpen));
+});
+
+document.querySelectorAll('.mobile-nav .nav-link').forEach((link) => {
+  link.addEventListener('click', () => {
+    mobileNav.classList.remove('open');
+    burger.classList.remove('open');
+    burger.setAttribute('aria-expanded', 'false');
+  });
+});
+</script>
+
 </body>
 </html>
