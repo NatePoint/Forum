@@ -6,52 +6,67 @@
   <title>Тема — ЗнаниеОбмен</title>
   <link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body data-page="topic">
   <div class="layout">
 
     <aside class="sidebar-left">
-      <div class="logo">
-        ЗнаниеОбмен
-        <span>Форум обмена знаниями</span>
+      <div class="sidebar-head">
+        <div class="logo">
+          <span data-i18n="app.name">ЗнаниеОбмен</span>
+          <span data-i18n="app.tagline">Форум обмена знаниями</span>
+        </div>
+        <button type="button" class="collapse-btn" id="btn-collapse" aria-expanded="true">&laquo;</button>
       </div>
       <ul class="nav">
-        <li><a href="index.html">Все темы</a></li>
-        <li><a href="index.html#create">Создать тему</a></li>
-        <li><a href="index.html#rules">Правила</a></li>
+        <li><a href="index.html"><span class="nav-icon">T</span><span data-i18n="nav.topics">Все темы</span></a></li>
+        <li><a href="index.html#create"><span class="nav-icon">+</span><span data-i18n="nav.create">Создать тему</span></a></li>
+        <li><a href="index.html#rules"><span class="nav-icon">R</span><span data-i18n="nav.rules">Правила</span></a></li>
+        <li><a href="index.html#settings"><span class="nav-icon">S</span><span data-i18n="nav.settings">Настройки</span></a></li>
       </ul>
+      <div class="side-stats">
+        <h3 data-i18n="topic.stat.title">Статистика темы</h3>
+        <div class="stat-row"><span data-i18n="topic.stat.answers">Ответов:</span><strong id="side-answers-count">0</strong></div>
+        <div class="stat-row"><span data-i18n="topic.stat.solved">Решение найдено:</span><strong id="side-solved-status">Нет</strong></div>
+      </div>
+      <nav class="nav-rail">
+        <a href="index.html" title="Topics">T</a>
+        <a href="index.html#create" title="Create">+</a>
+        <a href="index.html#rules" title="Rules">R</a>
+        <a href="index.html#settings" title="Settings">S</a>
+      </nav>
     </aside>
 
     <main class="content">
       <div id="topic-container">
-        <div class="breadcrumbs"><a href="index.html">Все темы</a> · Страница темы</div>
+        <div class="breadcrumbs"><a href="index.html" data-i18n="crumb.topics">Все темы</a> · <span data-i18n="crumb.topic">Страница темы</span></div>
 
         <section class="topic-full">
           <h1 id="topic-title">Загрузка...</h1>
           <div class="topic-meta">
-            Автор: <strong id="topic-author"></strong> · <span id="topic-date"></span>
+            <span data-i18n="card.author">Автор:</span> <strong id="topic-author"></strong> · <span id="topic-date"></span>
           </div>
           <div class="tag-list" id="topic-tags" style="margin-bottom:16px"></div>
           <div class="topic-body" id="topic-text"></div>
         </section>
 
-        <h2 class="answers-title">Ответы (<span id="answers-count-header">0</span>)</h2>
+        <h2 class="answers-title"><span data-i18n="answers.h2">Ответы</span> (<span id="answers-count-header">0</span>)</h2>
         <div id="answers-list">
-          <div class="loading">Загрузка ответов...</div>
+          <div class="loading" data-i18n="answers.loading">Загрузка ответов...</div>
         </div>
 
         <section class="reply-form">
-          <h3>Добавить ответ</h3>
+          <h3 data-i18n="reply.h3">Добавить ответ</h3>
           <form id="answerForm">
             <div class="form-row">
-              <label for="field-answer-author">Ваше имя</label>
-              <input type="text" id="field-answer-author" maxlength="40" placeholder="Имя или ник">
+              <label for="field-answer-author" data-i18n="reply.author">Ваше имя</label>
+              <input type="text" id="field-answer-author" maxlength="40" data-i18n-ph="reply.ph.author" placeholder="Имя или ник">
             </div>
             <div class="form-row">
-              <label for="field-answer-text">Текст ответа</label>
-              <textarea id="field-answer-text" rows="5" placeholder="Ответьте по существу: решите проблему автора, а не спорьте с ним."></textarea>
+              <label for="field-answer-text" data-i18n="reply.text">Текст ответа</label>
+              <textarea id="field-answer-text" rows="5" data-i18n-ph="reply.ph.text" placeholder="Ответьте по существу: решите проблему автора, а не спорьте с ним."></textarea>
             </div>
             <div class="error-box" id="answer-error" style="display:none"></div>
-            <button type="submit" class="btn" id="btn-submit-answer">Отправить ответ</button>
+            <button type="submit" class="btn" id="btn-submit-answer" data-i18n="reply.submit">Отправить ответ</button>
           </form>
         </section>
       </div>
@@ -59,17 +74,17 @@
 
     <aside class="sidebar-right">
       <div class="info-block">
-        <h3>Статистика темы</h3>
-        <div class="stat-row"><span>Ответов:</span><strong id="answers-count">0</strong></div>
-        <div class="stat-row"><span>Решение найдено:</span><strong id="solved-status">Нет</strong></div>
+        <h3 data-i18n="topic.stat.title">Статистика темы</h3>
+        <div class="stat-row"><span data-i18n="topic.stat.answers">Ответов:</span><strong id="answers-count">0</strong></div>
+        <div class="stat-row"><span data-i18n="topic.stat.solved">Решение найдено:</span><strong id="solved-status">Нет</strong></div>
       </div>
       <div class="info-block">
-        <h3>Как это работает</h3>
-        <p style="font-size:14px">Здесь нет голосования. Когда автор темы получит подходящий ответ, он нажмёт кнопку «Лучший ответ» под ним — и тема будет считаться решённой.</p>
+        <h3 data-i18n="how.title">Как это работает</h3>
+        <p data-i18n="how.text">Здесь нет голосования. Когда автор темы получит подходящий ответ, он нажмёт кнопку «Лучший ответ» под ним — и тема будет считаться решённой.</p>
       </div>
       <div class="info-block">
-        <h3>О форуме</h3>
-        <p style="font-size:14px">ЗнаниеОбмен — анти-reddit: только вопросы, ответы и одно признание автора. Все данные общие для всех посетителей.</p>
+        <h3 data-i18n="sidebar.about.title">О форуме</h3>
+        <p data-i18n="sidebar.about.text">ЗнаниеОбмен — анти-reddit. Здесь нет голосов и кармы. Ценен только один ответ — тот, который автор темы признал лучшим. Все данные общие и видны каждому.</p>
       </div>
     </aside>
 
@@ -77,6 +92,7 @@
 
   <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore-compat.js"></script>
+  <script src="ui.js"></script>
   <script src="topic.js"></script>
 </body>
 </html>
